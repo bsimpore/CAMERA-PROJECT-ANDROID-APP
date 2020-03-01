@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ENEE 408A Project Robot Control</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="face_traking">Face Traking</string>
+    <string name="manual">Manual</string>
+    <string name="autonomous">Autonomous</string>
+    <string name="control_modes">CONTROL MODES</string>
+    <string name="background_images_for_all_the_screens">Background images for all the screens</string>
+    <string name="project_control">PROJECT CONTROL</string>
+    <string name="connect_to_device">Connect to Device</string>
+    <string name="connect">Connect</string>
+    <string name="ssid">SSID</string>
+    <string name="password">Password</string>
+    <string name="password_">Password:</string>
+    <string name="ssid_">SSID:</string>
+    <string name="enable_video">Enable Video</string>
+    <string name="buttonleft">LEFT</string>
+    <string name="buttondown">DOWN</string>
+    <string name="buttonright">RIGHT</string>
+    <string name="buttonup">UP</string>
+    <string name="stop">STOP</string>
+    <string name="messages_area">messages Area</string>
+</resources>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brice.enee408aprojectrobotcontrol.Main_Menu">
+
+    <TextView
+        android:id="@+id/projectControl"
+        android:layout_width="318dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="@font/black_ops_one"
+        android:gravity="center"
+        android:text="@string/project_control"
+        android:textColor="#B60404"
+        android:textSize="30sp"
+        android:textStyle="italic"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="286dp"
+        android:layout_marginTop="225dp"
+        android:layout_marginBottom="125dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ScrollView
+            android:id="@+id/ControlButtons"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="50dp"
+            android:fadingEdge="horizontal|vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:fadingEdge="horizontal|vertical|none"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/ControlModeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:fontFamily="@font/black_ops_one"
+                    android:gravity="center_horizontal"
+                    android:text="@string/control_modes"
+                    android:textColor="#64E02222"
+                    android:textSize="26sp"
+                    android:typeface="normal" />
+
+                <Button
+                    android:id="@+id/ManualButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="manualButtonOnClick"
+                    android:text="@string/manual"
+                    android:textSize="24sp"
+                    android:textStyle="italic" />
+
+                <Button
+                    android:id="@+id/AutonomousButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="autonomousButtonOnClick"
+                    android:text="@string/autonomous"
+                    android:textSize="24sp"
+                    android:textStyle="italic" />
+
+                <Button
+                    android:id="@+id/FaceTrackingButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="facetrackingButtonOnClick"
+                    android:text="@string/face_traking"
+                    android:textSize="24sp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
