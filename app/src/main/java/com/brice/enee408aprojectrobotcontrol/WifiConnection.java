@@ -8,25 +8,24 @@ import android.view.View;
 import android.widget.EditText;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class WifiConnection extends AppCompatActivity {
 
-    WifiClient client;
-    EditText ssid;
-    EditText password;
+    private WifiClient client;
+    private EditText ssid;
+    private EditText password;
 
     public void connectAndGoToMainMenu(View view) {
 
-        byte[] ipAddr = new byte[] {(byte)192, (byte)168, 4, 1 };
-        client = new WifiClient(80, ipAddr);
+        InetAddress ipAddr = null;
         try {
-            client.connect();
-        } catch (IOException e) {
-            e.printStackTrace();
-            EmptyFieldDialog dialog = new EmptyFieldDialog();
-            dialog.show(getSupportFragmentManager(), "Empty Fields");
+            ipAddr = InetAddress.getByName("192.168.4.1");
+        } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+        client = new WifiClient(80, ipAddr);
 
         ssid = (EditText) findViewById(R.id.SSIDField);
         password = (EditText) findViewById(R.id.passwordField);
@@ -36,6 +35,16 @@ public class WifiConnection extends AppCompatActivity {
             dialog.show(getSupportFragmentManager(), "Empty Fields");
         }
         else {
+            Thread t = new Thread();
+            try {
+                t = new Thread(client);
+                t.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+                EmptyFieldDialog dialog = new EmptyFieldDialog();
+                dialog.show(getSupportFragmentManager(), "Empty Fields");
+                e.printStackTrace();
+            }
 
             ProgressDialog mdialog = new ProgressDialog(WifiConnection.this);
             mdialog.setMessage("Please wait...");
@@ -46,16 +55,16 @@ public class WifiConnection extends AppCompatActivity {
             String send_password = password.getText().toString();
 
             client.send(send_ssid);
-            while(!client.receive().equals("OK")) {
+            while(!client.received().toString().equals("OK")) {
             }
 
             client.send(send_password);
-            while(!client.receive().equals("OK")) {
+            while(!client.received().toString().equals("OK")) {
             }
 
-            String confirm = client.receive();
+            String confirm = client.received().toString();
             while(confirm.equals("")) {
-                //confirm = client.receive();
+                confirm = client.received().toString();
             }
 
             if(confirm.equals("connected")) {
@@ -70,6 +79,8 @@ public class WifiConnection extends AppCompatActivity {
                 FailedConnectionDialog fdialog = new FailedConnectionDialog();
                 fdialog.show(getSupportFragmentManager(), "Failed");
             }
+
+            t.interrupt();
         }
     }
 
