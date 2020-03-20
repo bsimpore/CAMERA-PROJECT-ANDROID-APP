@@ -18,12 +18,15 @@ class WifiClient implements Runnable {
     private InetAddress IP;
     private StringBuffer send;
     private StringBuffer received;
+    private int flag;
+
 
     protected WifiClient(int port, InetAddress IP) {
         this.serverPort = port;
         this.IP = IP;
         send = new StringBuffer("");
         received = new StringBuffer("");
+        flag = 0;
     }
 
     protected void send(String message) {
@@ -31,7 +34,9 @@ class WifiClient implements Runnable {
     }
 
     protected StringBuffer received() {
-        return received;
+        StringBuffer ret = new StringBuffer(received.toString());
+        received.replace(0, received.length(), "");
+        return ret;
     }
 
 
@@ -46,13 +51,19 @@ class WifiClient implements Runnable {
 
             while(true) {
 
-                String str = in.readLine();
-                if(!str.equals("")) {
-                    received.replace(0, received.length(), str);
+                if(flag == 1) {
+                    if (in.ready()) {
+                        String str = in.readLine();
+                        received.replace(0, received.length(), str);
+                        flag = 0;
+                    }
                 }
-                else if(!send.toString().equals("")) {
-                    out.println(send.toString());
-                    send.replace(0, send.length(), "");
+                else {
+                    if(!send.toString().equals("")) {
+                        out.println(send.toString());
+                        send.replace(0, send.length(), "");
+                        flag = 1;
+                    }
                 }
 
             }

@@ -7,13 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class WifiConnection extends AppCompatActivity {
 
-    private WifiClient client;
+    private WifiClientExec client;
     private EditText ssid;
     private EditText password;
 
@@ -25,7 +24,7 @@ public class WifiConnection extends AppCompatActivity {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        client = new WifiClient(80, ipAddr);
+        client = new WifiClientExec(80, ipAddr);
 
         ssid = (EditText) findViewById(R.id.SSIDField);
         password = (EditText) findViewById(R.id.passwordField);
@@ -35,10 +34,8 @@ public class WifiConnection extends AppCompatActivity {
             dialog.show(getSupportFragmentManager(), "Empty Fields");
         }
         else {
-            Thread t = new Thread();
             try {
-                t = new Thread(client);
-                t.start();
+                client.startClient();
             } catch (Exception e) {
                 e.printStackTrace();
                 EmptyFieldDialog dialog = new EmptyFieldDialog();
@@ -62,6 +59,7 @@ public class WifiConnection extends AppCompatActivity {
             while(!client.received().toString().equals("OK")) {
             }
 
+            client.send("end");    // end
             String confirm = client.received().toString();
             while(confirm.equals("")) {
                 confirm = client.received().toString();
@@ -72,15 +70,16 @@ public class WifiConnection extends AppCompatActivity {
                 SuccessfulConnectionDialog dialog = new SuccessfulConnectionDialog();
                 dialog.show(getSupportFragmentManager(), "Connected");
 
+                client.stopClient();
+
                 Intent intent = new Intent(getApplicationContext(), Main_Menu.class);
                 startActivity(intent);
             }
             else {
                 FailedConnectionDialog fdialog = new FailedConnectionDialog();
                 fdialog.show(getSupportFragmentManager(), "Failed");
+                client.stopClient();
             }
-
-            t.interrupt();
         }
     }
 
