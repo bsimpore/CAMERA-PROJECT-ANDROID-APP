@@ -12,10 +12,12 @@ import java.util.ArrayList;
 public class WifiServer implements Runnable {
 
     private final int PORTNUMBER;
-    //private final InetAddress IP;
-    private String ipString;
+    //private InetAddress IP;
+    private String ip = "192.168.1.226";
     private ServerThreadForESP esp;
     private ServerThreadForPI raspi;
+    private boolean espConnected;
+    private boolean raspiConnected;
 
     /**
      * Server class constructor taking
@@ -25,7 +27,8 @@ public class WifiServer implements Runnable {
     public WifiServer(int port) {
 
         PORTNUMBER = port;
-        ipString = "192.168.1.226";
+        espConnected = false;
+        raspiConnected = false;
 
     }
 
@@ -37,22 +40,30 @@ public class WifiServer implements Runnable {
         raspi.send.add(new StringBuffer(command));
     }
 
-    public String receivedFromESP() {
+    public StringBuffer receivedFromESP() {
         if(!esp.received.isEmpty()) {
-            return esp.received.remove(0).toString();
+            return esp.received.remove(0);
         }
         else {
-            return "";
+            return new StringBuffer("");
         }
     }
 
-    public String receivedFromPI() {
+    public StringBuffer receivedFromPI() {
         if(!raspi.received.isEmpty()) {
-            return raspi.received.remove(0).toString();
+            return raspi.received.remove(0);
         }
         else {
-            return "";
+            return new StringBuffer("");
         }
+    }
+
+    public boolean isEspConnected() {
+        return espConnected;
+    }
+
+    public boolean isRaspiConnected() {
+        return raspiConnected;
     }
 
     /**
@@ -67,7 +78,7 @@ public class WifiServer implements Runnable {
 
         try {
             ServerSocket listen = new ServerSocket(PORTNUMBER);
-            System.out.println("Server is Running");
+            //ip = listen.getInetAddress().getHostName();
 
             while(true) {
 
@@ -76,12 +87,14 @@ public class WifiServer implements Runnable {
                 PrintWriter out = new PrintWriter(client.getOutputStream(),true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-                if(client.getInetAddress().equals(InetAddress.getByName("192.168.4.1"))) {
+                if(client.getInetAddress().equals(InetAddress.getByName("192.168.43.222"))) {
+                    espConnected = true;
                     esp = new ServerThreadForESP(in, out);
                     Thread t = new Thread(esp);
                     t.run();
                 }
                 else {
+                    raspiConnected = true;
                     raspi = new ServerThreadForPI(in, out);
                     Thread t = new Thread(raspi);
                     t.run();

@@ -15,6 +15,7 @@ public class ManualControl extends AppCompatActivity {
     private final String COMMAND_MANUAL = "";
     private final String COMMAND_AUTONOMOUS = "";
     private final String COMMAND_FACETRACKING = "";
+    private WifiServerExec server;
 
     public void enableVideo(View view) {
         Switch videoSwitch = (Switch) findViewById(R.id.videoSwitch);
@@ -31,5 +32,6 @@ public class ManualControl extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
+        //server = (WifiServerExec) getIntent().getSerializableExtra("server");
     }
 }

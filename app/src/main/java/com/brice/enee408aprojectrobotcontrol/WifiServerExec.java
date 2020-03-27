@@ -1,6 +1,8 @@
 package com.brice.enee408aprojectrobotcontrol;
 
-public class WifiServerExec {
+import java.io.Serializable;
+
+public class WifiServerExec implements Serializable {
 
     private WifiServer server;
 
@@ -11,6 +13,30 @@ public class WifiServerExec {
      */
     public WifiServerExec(int port) {
         server = new WifiServer(port);
+    }
+
+    public boolean isEspConnected() {
+        return server.isEspConnected();
+    }
+
+    public boolean isRaspiConnected() {
+        return server.isRaspiConnected();
+    }
+
+    public void sendCommandToESP(String command) {
+        server.sendCommandToESP(command);
+    }
+
+    public void sendCommandToPI(String command) {
+        server.sendCommandToPI(command);
+    }
+
+    public StringBuffer receivedFromESP() {
+        return server.receivedFromESP();
+    }
+
+    public StringBuffer receivedFromPI() {
+        return server.receivedFromPI();
     }
 
     /**
