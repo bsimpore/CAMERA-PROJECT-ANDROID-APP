@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.Socket;
 import java.net.SocketPermission;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 
-class WifiClient implements Runnable {
+class WifiClient implements Runnable, Serializable {
 
     private BufferedReader in;
     private PrintWriter out;
@@ -18,7 +19,6 @@ class WifiClient implements Runnable {
     private InetAddress IP;
     private StringBuffer send;
     private StringBuffer received;
-    private int flag;
 
 
     protected WifiClient(int port, InetAddress IP) {
@@ -26,7 +26,6 @@ class WifiClient implements Runnable {
         this.IP = IP;
         send = new StringBuffer("");
         received = new StringBuffer("");
-        flag = 0;
     }
 
     protected void send(String message) {
@@ -51,20 +50,16 @@ class WifiClient implements Runnable {
 
             while(true) {
 
-                if(flag == 1) {
-                    if (in.ready()) {
-                        String str = in.readLine();
-                        received.replace(0, received.length(), str);
-                        flag = 0;
-                    }
+                if (in.ready()) {
+                    String str = in.readLine();
+                    received.replace(0, received.length(), str);
                 }
-                else {
-                    if(!send.toString().equals("")) {
-                        out.println(send.toString());
-                        send.replace(0, send.length(), "");
-                        flag = 1;
-                    }
+
+                if(!send.toString().equals("")) {
+                    out.println(send.toString());
+                    send.replace(0, send.length(), "");
                 }
+
 
             }
         } catch (IOException e) {

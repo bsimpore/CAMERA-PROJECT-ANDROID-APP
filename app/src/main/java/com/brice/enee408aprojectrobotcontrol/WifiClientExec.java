@@ -1,8 +1,9 @@
 package com.brice.enee408aprojectrobotcontrol;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 
-public class WifiClientExec {
+public class WifiClientExec implements Serializable {
 
     private WifiClient client;
     private Thread t;

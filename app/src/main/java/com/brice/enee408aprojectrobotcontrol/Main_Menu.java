@@ -12,16 +12,19 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class Main_Menu extends AppCompatActivity {
 
-    WifiServerExec server;
-    ScrollView controlButtons;
-    Button startServer;
+    private WifiClientExec client;
+    private ScrollView controlButtons;
+    private Button startClient;
 
     public void manualButtonOnClick(View view) {
         // Load Manual Operation View
         Intent intent = new Intent(getApplicationContext(), ManualControl.class);
-        //intent.putExtra("server", server);
+        intent.putExtra("client", client);
         startActivity(intent);
     }
 
@@ -39,13 +42,18 @@ public class Main_Menu extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startServerButtonOnClick(View view) {
+    public void startEspClientOnClick(View view) {
         controlButtons.setVisibility(View.VISIBLE);
-        server = new WifiServerExec(8080);
-        server.startServer();
+        InetAddress ipAddr = null;
+        try {
+            ipAddr = InetAddress.getByName("192.168.43.193");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        client = new WifiClientExec(80, ipAddr);
         //Toast.makeText(Main_Menu.this,"Server is running!",Toast.LENGTH_LONG).show();
-        makeToast("Server is running!");
-        startServer.setVisibility(View.INVISIBLE);
+        makeToast("Client is connected");
+        startClient.setVisibility(View.INVISIBLE);
 
         //ListenForConnection listen = new ListenForConnection();
         //Thread t = new Thread(listen);
@@ -67,9 +75,10 @@ public class Main_Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__menu);
         controlButtons = (ScrollView) findViewById(R.id.ControlButtons);
-        startServer = (Button) findViewById(R.id.startServer);
+        startClient = (Button) findViewById(R.id.startClient);
     }
 
+    /*
     private class ListenForConnection implements Runnable {
 
         @Override
@@ -87,5 +96,7 @@ public class Main_Menu extends AppCompatActivity {
             controlButtons.setVisibility(View.VISIBLE);
         }
     }
+
+     */
 
 }

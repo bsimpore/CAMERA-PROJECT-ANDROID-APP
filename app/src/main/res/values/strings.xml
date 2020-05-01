@@ -22,5 +22,5 @@
     <string name="buttonup">UP</string>
     <string name="stop">STOP</string>
     <string name="messages_area">messages Area</string>
-    <string name="start_server">Start Server</string>
+    <string name="start_esp_client">Start ESP client</string>
 </resources>
